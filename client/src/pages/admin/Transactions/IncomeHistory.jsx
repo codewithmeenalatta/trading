@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Download, RefreshCcw, Activity } from 'lucide-react';
 import toast from 'react-hot-toast';
+import api from '../../../api/axios';
 
 const IncomeHistory = () => {
   const [history, setHistory] = useState([]);
@@ -10,8 +11,8 @@ const IncomeHistory = () => {
     setLoading(true);
     try {
       // Future API connection
-      // const res = await api.get('/admin/transactions/income-history');
-      // setHistory(res.data);
+      const res = await api.get('/admin/transactions/income-history');
+      setHistory(res.data);
       
       // Fake delay for now
       setTimeout(() => setLoading(false), 500); 

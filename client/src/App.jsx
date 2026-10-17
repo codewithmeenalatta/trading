@@ -27,14 +27,16 @@ import AdminPannel from './pages/admin/AdminPannel';
 import UserList from './pages/admin/users/UserList';
 import BumperOffers from './pages/admin/users/BumperOffers.jsx';
 import Documents from './pages/admin/users/Documents.jsx';
-import TransactionList from './pages/admin/transactions/TransactionList.jsx';
-import PendingTransactions from './pages/admin/transactions/PendingTransactions.jsx'; 
-import IncomeHistory from './pages/admin/transactions/IncomeHistory.jsx';
+// import PendingTransactions from './pages/admin/transactions/PendingTransactions.jsx'; 
+// import IncomeHistory from './pages/admin/transactions/IncomeHistory.jsx';
 import BannerList from './pages/admin/content/BannerList.jsx';
 import AddBanner from './pages/admin/content/AddBanner.jsx';
 import PopupList from './pages/admin/content/PopupList.jsx';
 import AddPopup from './pages/admin/content/AddPopup.jsx';
 import AdminTickets from "./pages/admin/AdminTickets.jsx";
+import TransactionList from './pages/admin/transactions/TransactionList.jsx';
+import PendingTransactions from './pages/admin/transactions/PendingTransactions.jsx';
+import IncomeHistory from './pages/admin/transactions/IncomeHistory.jsx';
 
 
 function App() {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, Search, RefreshCcw, ArrowRightLeft } from 'lucide-react';
+import { Download, Search,  ArrowRightLeft } from 'lucide-react';
 import api from '../../../api/axios.js';
 import toast from 'react-hot-toast';
 
@@ -16,11 +16,11 @@ const TransactionList = () => {
   const fetchTransactions = async () => {
     setLoading(true);
     try {
-      // Backend api connect hone tak fake delay
-      // const query = new URLSearchParams();
-      // ... (filters append)
-      // const res = await api.get(`/admin/transactions/all?${query.toString()}`);
-      // setTransactions(res.data);
+     
+      const query = new URLSearchParams();
+      
+      const res = await api.get(`/admin/transactions/all?${query.toString()}`);
+      setTransactions(res.data);
       setTimeout(() => setLoading(false), 500); 
     } catch (error) {
       toast.error("Failed to load transactions");
