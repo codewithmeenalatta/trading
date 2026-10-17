@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Ek instance banaya backend URL ke sath
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_BASE_URL,
   withCredentials:true // Yahan apne backend ka actual path/port rakhein
 });
 
