@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Outlet } from 'react-router-dom';
 // Agar aapke paas Navbar aur Footer alag se bane hain toh unko import karein
 import Navbar from './Navbar'; 
