@@ -7,16 +7,30 @@ const IncomeHistory = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // 🟢 FIXED: Missing state variables for filters added
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [typeFilter, setTypeFilter] = useState("ALL");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  // 🟢 FIXED: Function name changed to match the useEffect call
   const fetchIncomeHistory = async () => {
     setLoading(true);
     try {
-      // Future API connection
-      const res = await api.get('/admin/transactions/income-history');
-      setHistory(res.data);
+      const query = new URLSearchParams();
       
-      // Fake delay for now
+      if (statusFilter && statusFilter !== "ALL") query.append("status", statusFilter);
+      if (typeFilter && typeFilter !== "ALL") query.append("type", typeFilter);
+      if (fromDate) query.append("fromDate", fromDate);
+      if (toDate) query.append("toDate", toDate);
+
+      const res = await api.get(`/admin/transactions/income-history?${query.toString()}`);
+      
+      // 🟢 FIXED: setTransactions ki jagah setHistory aayega
+      setHistory(res.data); 
       setTimeout(() => setLoading(false), 500); 
     } catch (error) {
+      console.log(error)
       toast.error("Failed to load income history");
     } finally {
       setLoading(false);
@@ -25,7 +39,7 @@ const IncomeHistory = () => {
 
   useEffect(() => {
     fetchIncomeHistory();
-  }, []);
+  }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
     <div className="space-y-6 min-h-screen pb-20 w-full min-w-0">
@@ -78,7 +92,7 @@ const IncomeHistory = () => {
                 ) : (
                   history.map((record, idx) => (
                     <tr key={idx} className="hover:bg-gray-50 transition">
-                       {/* Map backend Data Here in future */}
+                        {/* Map backend Data Here in future */}
                     </tr>
                   ))
                 )}
@@ -92,5 +106,4 @@ const IncomeHistory = () => {
   );
 };
 
-// YE LINE MISSING THI PICHLE CODE ME, JISKI WAJAH SE ERROR AA RAHA THA:
 export default IncomeHistory;

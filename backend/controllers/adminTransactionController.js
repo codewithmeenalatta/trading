@@ -94,3 +94,54 @@ export const processWithdrawal = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// income history
+// File: backend/controllers/adminTransactionController.js
+
+export const getIncomeHistory = async (req, res) => {
+  try {
+    // 1. Frontend se aane wale saare filters nikal liye
+    const { status, type, fromDate, toDate } = req.query;
+
+    // 2. Base Query: Sirf Income wale types hi fetch honge
+    let query = {
+      type: { $in: ["ROI_REWARD", "GENERATION-REWARD", "RANK-BONUS"] }
+    };
+
+    // 3. Status Filter (Agar ALL nahi hai toh)
+    if (status && status !== "ALL") {
+       query.status = status;
+    }
+
+    // 4. Type Filter (Agar specific income type select kiya hai)
+    if (type && type !== "ALL") {
+       query.type = type;
+    }
+
+    // 5. Date Filter (From Date se To Date tak)
+    if (fromDate || toDate) {
+      query.createdAt = {};
+      
+      if (fromDate) {
+         query.createdAt.$gte = new Date(fromDate);
+      }
+      
+      if (toDate) {
+        let endDate = new Date(toDate);
+        endDate.setHours(23, 59, 59, 999); // Us din ki aakhiri minute tak
+        query.createdAt.$lte = endDate;
+      }
+    }
+
+    // 6. Database se filter kiya hua data lana aur User data jorna
+    const incomeTransactions = await Transaction.find(query)
+      .populate("user", "name email goldenId")
+      .sort({ createdAt: -1 });
+
+    // 7. Frontend ko data bhejna
+    res.status(200).json(incomeTransactions);
+    
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
