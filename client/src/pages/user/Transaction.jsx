@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Download, Filter, ChevronLeft, ChevronRight, List } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../../api/axios';
@@ -19,6 +19,7 @@ const Transaction = () => {
                 setTransactions(response.data.transactions);
                 setTotalPages(response.data.totalPages);
             } catch (error) {
+                console.log(error)
                 toast.error("Failed to load transactions");
             } finally {
                 setLoading(false);

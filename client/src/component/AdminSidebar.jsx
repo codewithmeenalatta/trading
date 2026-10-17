@@ -8,7 +8,7 @@ const AdminSidebar = ( {isCollapsed, setIsCollapsed}) => {
   
   const [isUsersOpen, setIsUsersOpen] = useState(true); 
   const [isTransactionsOpen, setIsTransactionsOpen] = useState(false); 
-  const [isIncomeOpen, setIsIncomeOpen] = useState(false);
+  // const [isIncomeOpen, setIsIncomeOpen] = useState(false);
   const [isContentOpen, setIsContentOpen] = useState(false); 
 
   const navigate = useNavigate();

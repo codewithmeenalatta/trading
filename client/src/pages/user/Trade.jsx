@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { TrendingUp, Wallet, AlertCircle, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../../api/axios';
@@ -16,6 +16,7 @@ const Trade = () => {
                 const response = await api.get('/trade/balance');
                 setBalance(response.data.availableBalance);
             } catch (error) {
+                console.log(error)
                 toast.error("Failed to load balance");
             } finally {
                 setIsFetching(false);

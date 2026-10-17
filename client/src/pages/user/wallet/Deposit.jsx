@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Wallet, QrCode, Copy, CheckCircle, ArrowLeft } from 'lucide-react';
+import  { useState } from 'react';
+import {  Copy, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '../../../api/axios'; // Dhyan rakhein ki aapka axios ka path yahi ho

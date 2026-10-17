@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Ticket, Clock, AlertCircle, Inbox } from 'lucide-react';
-import { Link } from 'react-router-dom';
+
 import api from '../../../api/axios'; // Apna axios path check kar lein
 
 const MyTickets = () => {

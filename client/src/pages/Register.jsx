@@ -14,6 +14,7 @@ const Register = () => {
   useEffect(() => {
     const refCode = searchParams.get('referral');
     if(refCode){
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData((prev) => ({
         ...prev,
         referralCode : refCode

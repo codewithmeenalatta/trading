@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { ShieldCheck, KeyRound, Lock, CheckCircle2, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 // import api from '../../../api/axios'; // Apna axios ka sahi path dalein
