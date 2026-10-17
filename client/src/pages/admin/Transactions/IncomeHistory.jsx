@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, RefreshCcw, Activity } from 'lucide-react';
+import { Download, RefreshCcw, Activity, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../../../api/axios';
 
@@ -7,13 +7,12 @@ const IncomeHistory = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 🟢 FIXED: Missing state variables for filters added
+  // Filter States
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [typeFilter, setTypeFilter] = useState("ALL");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
-  // 🟢 FIXED: Function name changed to match the useEffect call
   const fetchIncomeHistory = async () => {
     setLoading(true);
     try {
@@ -26,11 +25,9 @@ const IncomeHistory = () => {
 
       const res = await api.get(`/admin/transactions/income-history?${query.toString()}`);
       
-      // 🟢 FIXED: setTransactions ki jagah setHistory aayega
       setHistory(res.data); 
-      setTimeout(() => setLoading(false), 500); 
     } catch (error) {
-      console.log(error)
+      console.log("Income History Error:", error);
       toast.error("Failed to load income history");
     } finally {
       setLoading(false);
@@ -60,6 +57,48 @@ const IncomeHistory = () => {
         </div>
       </div>
 
+      {/* 🟢 NEW: Filter Section (Pehle missing tha) */}
+      <div className="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+          
+          <div className="w-full">
+            <label className="block text-xs font-semibold text-gray-600 mb-1">Status</label>
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="w-full px-3 py-2 border rounded-lg outline-none focus:border-blue-500 text-sm bg-white">
+              <option value="ALL">All Statuses</option>
+              <option value="COMPLETED">COMPLETED</option>
+              <option value="PENDING">PENDING</option>
+            </select>
+          </div>
+
+          <div className="w-full">
+            <label className="block text-xs font-semibold text-gray-600 mb-1">Income Type</label>
+            <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="w-full px-3 py-2 border rounded-lg outline-none focus:border-blue-500 text-sm bg-white">
+              <option value="ALL">All Incomes</option>
+              <option value="ROI_REWARD">ROI REWARD</option>
+              <option value="GENERATION-REWARD">GENERATION REWARD</option>
+              <option value="RANK-BONUS">RANK BONUS</option>
+            </select>
+          </div>
+
+          <div className="w-full">
+            <label className="block text-xs font-semibold text-gray-600 mb-1">From Date</label>
+            <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="w-full px-3 py-2 border rounded-lg outline-none focus:border-blue-500 text-sm" />
+          </div>
+
+          <div className="w-full">
+            <label className="block text-xs font-semibold text-gray-600 mb-1">To Date</label>
+            <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="w-full px-3 py-2 border rounded-lg outline-none focus:border-blue-500 text-sm" />
+          </div>
+
+          <div className="w-full flex gap-2">
+            <button onClick={fetchIncomeHistory} className="w-full flex justify-center items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+              <Search size={16} /> Filter
+            </button>
+          </div>
+
+        </div>
+      </div>
+
       {/* Main Table Card */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col w-full overflow-hidden">
         
@@ -74,6 +113,7 @@ const IncomeHistory = () => {
                   <th className="px-6 py-4">User Name</th>
                   <th className="px-6 py-4">Income Type</th>
                   <th className="px-6 py-4 font-bold text-gray-800">Amount</th>
+                  <th className="px-6 py-4">Status</th>
                   <th className="px-6 py-4">Date</th>
                 </tr>
               </thead>
@@ -81,7 +121,7 @@ const IncomeHistory = () => {
                 
                 {history.length === 0 ? (
                   <tr>
-                    <td colSpan="4" className="p-16 text-center text-gray-500">
+                    <td colSpan="5" className="p-16 text-center text-gray-500">
                       <div className="flex flex-col items-center space-y-3">
                         <Activity className="w-12 h-12 text-gray-300" />
                         <p className="text-lg font-semibold text-gray-600">No income history available.</p>
@@ -92,7 +132,29 @@ const IncomeHistory = () => {
                 ) : (
                   history.map((record, idx) => (
                     <tr key={idx} className="hover:bg-gray-50 transition">
-                        {/* Map backend Data Here in future */}
+                        {/* 🟢 FIXED: Yahan actual data render kiya gaya hai */}
+                        <td className="px-6 py-4 font-medium text-gray-900">
+                           {record.user?.name || "Unknown User"} 
+                           <span className="block text-xs text-gray-500">{record.user?.goldenId}</span>
+                        </td>
+                        <td className="px-6 py-4">
+                           <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded font-medium">
+                             {record.type}
+                           </span>
+                        </td>
+                        <td className="px-6 py-4 font-bold text-green-600">
+                           + ${record.amount}
+                        </td>
+                        <td className="px-6 py-4">
+                           <span className={`px-2 py-1 text-xs rounded font-medium ${
+                             record.status === 'COMPLETED' ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'
+                           }`}>
+                             {record.status}
+                           </span>
+                        </td>
+                        <td className="px-6 py-4 text-gray-500">
+                           {new Date(record.createdAt).toLocaleDateString()}
+                        </td>
                     </tr>
                   ))
                 )}
