@@ -1,0 +1,10 @@
+import express from "express";
+import { getProfile , updatePassword , updateProfile , updateWalletAddress,setTransactionPassword }from   "../controllers/profileController.js";
+import { isAuth } from "../middleware/auth.js";
+const router = express.Router();
+router.get('/' , isAuth , getProfile);
+router.put('/' , isAuth , updateProfile);
+router.put('/password', isAuth , updatePassword);
+router.put('/wallet' , isAuth , updateWalletAddress);
+router.put('/transaction-password', isAuth, setTransactionPassword);
+export default router;

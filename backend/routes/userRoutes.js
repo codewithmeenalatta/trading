@@ -1,0 +1,10 @@
+import express from "express";
+import { isAuth, isUser } from "../middleware/auth.js";
+import { getDashboardData , requestDeposit , investMoney , requestWithdraw , setTransactionPassword } from "../controllers/userController.js";
+const router = express.Router();
+router.get("/dashboard" , isAuth ,isUser, getDashboardData);
+router.post("/deposit" , isAuth , isUser , requestDeposit);
+router.post("/invest" , isAuth , isUser , investMoney);
+router.post("/withdraw" , isAuth ,isUser, requestWithdraw);
+router.post("/set-tx-password", isAuth,isUser, setTransactionPassword);
+export default router;
